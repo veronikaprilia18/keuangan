@@ -13,9 +13,12 @@ class Master extends CI_Controller
         $this->load->model('admin');
         $this->load->model('anggaran');
         $this->load->model('klien');
+        $this->load->model('pos');
+        $this->load->model('user');
         $this->load->library('form_validation');
     }
 
+    // fungsi data master KLIEN
     function klien()
     {
         //load the view
@@ -92,20 +95,28 @@ class Master extends CI_Controller
         redirect('master/klien');
     }
 
+    // fungsi data master POS
     function pos()
     {
         //load the view
+        $data['pos'] = $this->pos->getAll();
         $this->load->view('headfoot/header');
-        $this->load->view('pos/list-pos');
-        // $this->load->view('pos/input-data-pos');
+        $this->load->view('pos/list-pos', $data);
+        $this->load->view('headfoot/footer');
+    }
+
+    function tambah_pos()
+    {
+        $this->load->view('headfoot/header');
+        $this->load->view('pos/input-data-pos');
         $this->load->view('headfoot/footer');
     }
 
     function input_pos_proses()
     {
-        $idPos = $this->input->post('pos');
-        $idKategori = $this->input->post('kategori');
-        $namaPos = $this->input->post('nama-pos');
+        $idPos = $this->input->post('id_pos');
+        $idKategori = $this->input->post('id_kategori');
+        $namaPos = $this->input->post('nama_pos');
 
         $dataInsertPos = [
             'id_pos' => $idPos,
@@ -114,24 +125,67 @@ class Master extends CI_Controller
         ];
 
         $this->pos->insertData('tbl_pos', $dataInsertPos);
+
+        redirect('master/pos');
     }
 
+    function edit_pos($idPos)
+    {
+        $data['pos'] = $this->pos->getById($idPos);
+        $this->load->view('headfoot/header');
+        $this->load->view('pos/edit-data-pos', $data);
+        $this->load->view('headfoot/footer');
+    }
+
+    function update_pos($idPos)
+    {
+        $idPos = $this->input->post('id_pos');
+        $idKategori = $this->input->post('id_kategori');
+        $namaPos = $this->input->post('nama_pos');
+
+        $dataUpdatePos = [
+            'id_pos' => $idPos,
+            'id_kategori' => $idKategori,
+            'nama_pos' => $namaPos,
+        ];
+
+        $where = ['id_pos' => $idPos];
+        $this->pos->updateData('tbl_pos', $dataUpdatePos, $where);
+
+        redirect('master/pos');
+    }
+
+    function delete_pos($idPos)
+    {
+        $where = ['id_pos' => $idPos];
+        $this->pos->deleteData('tbl_pos', $where);
+        redirect('master/pos');
+    }
+
+    // fungsi data master USER
     function user()
     {
         //load the view
+        $data['user'] = $this->user->getAll();
         $this->load->view('headfoot/header');
-        $this->load->view('user/list-user');
-        // $this->load->view('user/input-data-user');
+        $this->load->view('user/list-user', $data);
+        $this->load->view('headfoot/footer');
+    }
+
+    function tambah_user()
+    {
+        $this->load->view('headfoot/header');
+        $this->load->view('user/input-data-user');
         $this->load->view('headfoot/footer');
     }
 
     function input_user_proses()
     {
         $idUser = $this->input->post('user');
-        $idPeran = $this->input->post('id-peran');
-        $namaUser = $this->input->post('nama-user');
-        $teleponUser = $this->input->post('telepon-user');
-        $gajiUser = $this->input->post('gaji-user');
+        $idPeran = $this->input->post('id_peran');
+        $namaUser = $this->input->post('nama_user');
+        $teleponUser = $this->input->post('telepon_user');
+        $gajiUser = $this->input->post('gaji_user');
 
         $dataInsertUser = [
             'id_user' => $idUser,
@@ -141,7 +195,46 @@ class Master extends CI_Controller
             'gaji_user' => $gajiUser,
         ];
 
-        $this->user->insertData('tbl_pos', $dataInsertUser);
+        $this->user->insertData('tbl_user', $dataInsertUser);
+
+        redirect('master/user');
+    }
+
+    function edit_user($idUser)
+    {
+        $data['user'] = $this->user->getById($idUser);
+        $this->load->view('headfoot/header');
+        $this->load->view('user/edit-data-user', $data);
+        $this->load->view('headfoot/footer');
+    }
+
+    function update_user($idUser)
+    {
+        $idUser = $this->input->post('user');
+        $idPeran = $this->input->post('id_peran');
+        $namaUser = $this->input->post('nama_user');
+        $teleponUser = $this->input->post('telepon_user');
+        $gajiUser = $this->input->post('gaji_user');
+
+        $dataUpdateUser = [
+            'id_user' => $idUser,
+            'id_peran' => $idPeran,
+            'nama_user' => $namaUser,
+            'telepon_user' => $teleponUser,
+            'gaji_user' => $gajiUser,
+        ];
+
+        $where = ['id_user' => $idUser];
+        $this->user->updateData('tbl_user', $dataUpdateUser, $where);
+
+        redirect('master/user');
+    }
+
+    function delete_user($idUser)
+    {
+        $where = ['id_user' => $idUser];
+        $this->user->deleteData('tbl_user', $where);
+        redirect('master/user');
     }
 }
 

@@ -16,7 +16,7 @@
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Data Klien</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Data Anggaran</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -32,10 +32,10 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <form action="<?php echo site_url('master/user') ?>" method="POST">
+                    <form action="<?php echo site_url('dashboard/administration') ?>" method="POST">
                         <div class="form-group">
                             <div style="float:right">
-                                <a href="<?php echo site_url('master/tambah_user') ?>" class="btn btn-primary">Tambah Data</a>
+                                <a href="<?php echo site_url('dashboard/tambah_admin') ?>" class="btn btn-primary">Tambah Data</a>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -62,30 +62,28 @@
                                 </div>
                                 <thead>
                                     <tr>
-                                        <th width="5%">ID User</th>
-                                        <th width="20%">ID Peran</th>
-                                        <th width="15%">Nama</th>
-                                        <th width="15%">Telepon</th>
-                                        <th width="15%">Gaji</th>
+                                        <th width="5%">ID Anggaran</th>
+                                        <th width="20%">ID Klien</th>
+                                        <th width="15%">Bulan</th>
+                                        <th width="15%">Tahun</th>
                                         <th width="12%">Action</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     <?php
-                                    foreach ($user as $value) { ?>
+                                    foreach ($anggaran as $value) { ?>
                                         <tr>
-                                            <td><?php echo $value->id_user ?></td>
-                                            <td><?php echo $value->id_peran ?></td>
-                                            <td><?php echo $value->nama_user ?></td>
-                                            <td><?php echo $value->telepon_user ?></td>
-                                            <td><?php echo $value->gaji_user ?></td>
-                                            <td></td>
+                                            <td><?php echo $value->id_anggaran ?></td>
+                                            <td><?php echo $value->id_klien ?></td>
+                                            <td><?php echo $value->id_bulan ?></td>
+                                            <td><?php echo $value->tahun ?></td>
                                             <td>
-                                                <a href="<?php echo site_url('master/edit_user/' . $value->id_user) ?>" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                                                <a href="<?php echo site_url('master/delete_user/' . $value->id_user) ?>" onclick="return confirm('Hapus data ini?')" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                                <a href="<?php echo site_url('dashboard/edit_admin/' . $value->id_anggaran) ?>" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                                                <a href="<?php echo site_url('dashboard/delete_admin/' . $value->id_anggaran) ?>" onclick="return confirm('Hapus data ini?')" class="btn btn-danger"><i class="fa fa-trash"></i></a>
 
                                             </td>
+
                                         </tr>
                                     <?php   }
                                     ?>

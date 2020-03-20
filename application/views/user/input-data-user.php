@@ -32,10 +32,14 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <form action="<?php echo site_url('dashboard/input_user_proses') ?>" method="POST">
-                        <div class="form-group">
-                            <label>Data User</label>
-                        </div>
+                    <!-- <div class="card-header">
+                        <a href="<?php echo site_url('master/') ?>"><i class="fas fa-arrow-right"></i> Back</a>
+                    </div> -->
+                    <div class="form-group">
+                        <label>Data User</label>
+                    </div>
+
+                    <form action="<?php echo site_url('master/input_user_proses') ?>" method="POST">
 
                         <div class="form-group">
                             <label class="control-label col-xs-3">ID Peran</label>
@@ -67,6 +71,7 @@
 
                         <div class="from-group text-right">
                             <input type="submit" class="btn btn-success" value="Simpan" />
+                            <a href="<?php echo site_url('master/user') ?>" class="btn btn-warning">Batal</a>
                         </div>
                     </form>
                 </div>

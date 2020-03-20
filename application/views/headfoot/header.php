@@ -115,7 +115,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="<?php echo site_url('dashboard/index') ?>">
                     <i class="fa fa-home"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -143,10 +143,10 @@
                 </a>
                 <div id="collapseAnggaran" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="#">Administrasi</a>
-                        <a class="collapse-item" href="#">Produksi & Operasional</a>
-                        <a class="collapse-item" href="#">Peralatan & Infrastruktur</a>
-                        <a class="collapse-item" href="#">Peralatan/Garansi</a>
+                        <a class="collapse-item" href="<?php echo site_url('dashboard/administration') ?>">Administrasi</a>
+                        <a class="collapse-item" href="<?php echo site_url('dashboard/production') ?>">Produksi & Operasional</a>
+                        <a class="collapse-item" href="<?php echo site_url('dashboard/hardware') ?>">Peralatan & Infrastruktur</a>
+                        <a class="collapse-item" href="<?php echo site_url('dashboard/maintenance') ?>">Peralatan/Garansi</a>
                     </div>
                 </div>
             </li>
@@ -159,7 +159,6 @@
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Laporan:</h6>
                         <a class="collapse-item" href="#">Lengkap</a>
                         <a class="collapse-item" href="register.html">Pemasukan</a>
                         <a class="collapse-item" href="forgot-password.html">Pengeluaran</a>

@@ -32,34 +32,40 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <form action="<?php echo site_url('dashboard/input_pos_proses') ?>" method="POST">
-                        <div class="form-group">
-                            <label>Data Pos Anggaran</label>
-                        </div>
+                    <!-- <div class="card-header">
+                        <a href="<?php echo site_url('master/') ?>"><i class="fas fa-arrow-right"></i> Back</a>
+                    </div> -->
+                    <div class="form-group">
+                        <label>Data Pos Anggaran</label>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="control-label col-xs-3">ID Pos Anggaran</label>
-                            <div class="col-xs-8">
-                                <input name="id_pos" class="form-control" type="text" placeholder="ID Pos Anggaran..." required>
-                            </div>
-                        </div>
-
+                    <form action="<?php echo site_url('master/input_pos_proses') ?>" method="POST">
                         <div class="form-group">
                             <label class="control-label col-xs-3">ID Kategori</label>
                             <div class="col-xs-8">
-                                <input name="id_kategori" class="form-control" type="text" placeholder="ID Kategori..." required>
+                                <!-- <input name="id_kategori" value="<?php echo $pos->id_kategori ?>" class="form-control" required> -->
+                                <tbody>
+                                    <td>
+                                        <select class="form-control" name="id kategori">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                    </td>
+                                </tbody>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-xs-3">Nama Pos Anggaran</label>
+                            <label class="control-label col-xs-3">Nama Pos</label>
                             <div class="col-xs-8">
-                                <input name="nama_pos" class="form-control" type="text" placeholder="Nama Pos Anggaran..." required>
+                                <input name="nama_pos" class="form-control" type="text" placeholder="Nama Pos..." required>
                             </div>
                         </div>
 
                         <div class="from-group text-right">
                             <input type="submit" class="btn btn-success" value="Simpan" />
+                            <a href="<?php echo site_url('master/pos') ?>" class="btn btn-warning">Batal</a>
                         </div>
                     </form>
                 </div>

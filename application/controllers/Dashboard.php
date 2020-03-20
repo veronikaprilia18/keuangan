@@ -41,7 +41,14 @@ class Dashboard extends CI_Controller
 		$data['pos'] = $this->anggaran->getPos(1)->result();
 		$data['klien'] = $this->klien->getKlien()->result();
 		$this->load->view('headfoot/header');
-		$this->load->view('administration/input-data', $data);
+		$this->load->view('administration/list-data', $data);
+		$this->load->view('headfoot/footer');
+	}
+
+	function tambah_admin()
+	{
+		$this->load->view('headfoot/header');
+		$this->load->view('administration/input-data');
 		$this->load->view('headfoot/footer');
 	}
 
@@ -78,6 +85,61 @@ class Dashboard extends CI_Controller
 
 		$this->anggaran->insertData('tbl_anggaran', $dataInsertAnggaran);
 		$this->anggaran->insertData('tbl_detail_anggaran', $dataInsertDetail);
+
+		redirect('dashboard/administration');
+	}
+
+	function edit_admin($idAnggaran)
+	{
+		$data['anggaran'] = $this->anggaran->getById($idAnggaran);
+		$this->load->view('headfoot/header');
+		$this->load->view('administration/edit-data', $data);
+		$this->load->view('headfoot/footer');
+	}
+
+	function update_klien($idKlien)
+	{
+		$idKlien = $this->input->post('klien');
+		$tahun = $this->input->post('tahun-anggaran');
+		$bulan = $this->input->post('bulan-anggaran');
+
+
+		//detail anggaran
+		$pos = $this->input->post('pos-anggaran');
+		$uraian = $this->input->post('uraian');
+		$volume = $this->input->post('volume');
+		$satuan = $this->input->post('satuan');
+		$hargaSatuan = $this->input->post('harga-satuan');
+		$pengeluaran = $this->input->post('pengeluaran');
+
+		$dataUpdateAnggaran = [
+			'id_klien' => $idKlien,
+			'id_bulan' => $bulan,
+			'tahun' => $tahun,
+
+		];
+
+		$dataUpdateDetail = [
+			'id_pos' => $pos,
+			'uraian' => $uraian,
+			'volume' => $volume,
+			'satuan' => $satuan,
+			'harga_satuan' => $hargaSatuan,
+			'pengeluaran' => $pengeluaran,
+		];
+
+		$where = ['id_klien' => $idKlien];
+		$this->anggaran->updateData('tbl_anggaran', $dataUpdateAnggaran, $where);
+		$this->anggaran->updateData('tbl_detail_anggaran', $dataUpdateDetail, $where);
+
+		redirect('dashboard/administration');
+	}
+
+	function delete_admin($idKlien)
+	{
+		$where = ['id_klien' => $idKlien];
+		$this->klien->deleteData('tbl_anggaran', $where);
+		redirect('dashboard/administration');
 	}
 
 	function production()

@@ -16,7 +16,7 @@
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Input Data</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Edit Data</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -32,48 +32,52 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <form action="<?php echo site_url('dashboard/input_klien_proses') ?>" method="POST">
-                        <div class="form-group">
-                            <label>Data Klien</label>
-                        </div>
+                    <!-- <div class="card-header">
+                        <a href="<?php echo site_url('master/') ?>"><i class="fas fa-arrow-right"></i> Back</a>
+                    </div> -->
+                    <div class="form-group">
+                        <label>Data Klien</label>
+                    </div>
 
+                    <form action="<?php echo site_url('master/update_user/' . $this->uri->segment(3)) ?>" method="POST">
                         <div class="form-group">
                             <label class="control-label col-xs-3">Nama Perusahaan</label>
                             <div class="col-xs-8">
-                                <input name="nama_perusahaan" class="form-control" type="text" placeholder="Nama Perusahaan..." required>
+                                <input name="nama_perusahaan" value="<?php echo $klien->nama_perusahaan ?>" class="form-control" type="text" placeholder="Nama Perusahaan..." required>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-xs-3">Nama Klien</label>
+                            <label class="control-label col-xs-3">ID Peran</label>
                             <div class="col-xs-8">
-                                <input name="nama_klien" class="form-control" type="text" placeholder="Nama Klien..." required>
+                                <input name="id_peran" class="form-control" type="text" placeholder="ID Peran..." required>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-xs-3">Alamat</label>
+                            <label class="control-label col-xs-3">Nama</label>
                             <div class="col-xs-8">
-                                <input name="alamat_klien" class="form-control" type="text" placeholder="Alamat Klien..." required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-xs-3">Email</label>
-                            <div class="col-xs-8">
-                                <input name="email_klien" class="form-control" type="text" placeholder="Email Klien..." required>
+                                <input name="nama_user" class="form-control" type="text" placeholder="Nama..." required>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-xs-3">Telepon</label>
                             <div class="col-xs-8">
-                                <input name="telepon_klien" class="form-control" type="number" placeholder="Telepon Klien..." required>
+                                <input name="telepon_user" class="form-control" type="text" placeholder="Telepon..." required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-xs-3">Gaji</label>
+                            <div class="col-xs-8">
+                                <input name="gaji_user" class="form-control" type="number" placeholder="Gaji..." required>
                             </div>
                         </div>
 
                         <div class="from-group text-right">
                             <input type="submit" class="btn btn-success" value="Simpan" />
+                            <a href="<?php echo site_url('master/klien') ?>" class="btn btn-warning">Batal</a>
                         </div>
                     </form>
                 </div>

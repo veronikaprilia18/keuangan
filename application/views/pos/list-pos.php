@@ -32,10 +32,10 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <form action="<?php echo site_url('dashboard/klien') ?>" method="POST">
+                    <form action="<?php echo site_url('master/pos') ?>" method="POST">
                         <div class="form-group">
                             <div style="float:right">
-                                <a href="<?php echo site_url('dashboard/input_klien_proses') ?>" class="btn btn-primary">Tambah Data</a>
+                                <a href="<?php echo site_url('master/tambah_pos') ?>" class="btn btn-primary">Tambah Data</a>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -62,14 +62,29 @@
                                 </div>
                                 <thead>
                                     <tr>
-                                        <th width="5%">ID</th>
+                                        <th width="5%">ID Pos</th>
                                         <th width="20%">ID Kategori</th>
-                                        <th width="15%">Nama Pos</th>
+                                        <th width="15%">Nama Pos Anggaran</th>
                                         <th width="12%">Action</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
+                                    <?php
+                                    foreach ($pos as $value) { ?>
+                                        <tr>
+                                            <td><?php echo $value->id_pos ?></td>
+                                            <td><?php echo $value->id_kategori ?></td>
+                                            <td><?php echo $value->nama_pos ?></td>
+                                            <td>
+                                                <a href="<?php echo site_url('master/edit_pos/' . $value->id_pos) ?>" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                                                <a href="<?php echo site_url('master/delete_pos/' . $value->id_pos) ?>" onclick="return confirm('Hapus data ini?')" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+
+                                            </td>
+
+                                        </tr>
+                                    <?php   }
+                                    ?>
                                 </tbody>
                                 </table>
                             </div>

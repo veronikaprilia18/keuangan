@@ -16,7 +16,7 @@
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Input Data</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Edit Data</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -32,48 +32,40 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <form action="<?php echo site_url('dashboard/input_klien_proses') ?>" method="POST">
-                        <div class="form-group">
-                            <label>Data Klien</label>
-                        </div>
+                    <!-- <div class="card-header">
+                        <a href="<?php echo site_url('master/') ?>"><i class="fas fa-arrow-right"></i> Back</a>
+                    </div> -->
+                    <div class="form-group">
+                        <label>Data Pos Anggaran</label>
+                    </div>
 
+                    <form action="<?php echo site_url('master/update_pos/' . $this->uri->segment(3)) ?>" method="POST">
                         <div class="form-group">
-                            <label class="control-label col-xs-3">Nama Perusahaan</label>
+                            <label class="control-label col-xs-3">ID Kategori</label>
                             <div class="col-xs-8">
-                                <input name="nama_perusahaan" class="form-control" type="text" placeholder="Nama Perusahaan..." required>
+                                <!-- <input name="id_kategori" value="<?php echo $pos->id_kategori ?>" class="form-control" required> -->
+                                <tbody>
+                                    <td>
+                                        <select class="form-control" name="id kategori">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                    </td>
+                                </tbody>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-xs-3">Nama Klien</label>
+                            <label class="control-label col-xs-3">Nama Pos</label>
                             <div class="col-xs-8">
-                                <input name="nama_klien" class="form-control" type="text" placeholder="Nama Klien..." required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-xs-3">Alamat</label>
-                            <div class="col-xs-8">
-                                <input name="alamat_klien" class="form-control" type="text" placeholder="Alamat Klien..." required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-xs-3">Email</label>
-                            <div class="col-xs-8">
-                                <input name="email_klien" class="form-control" type="text" placeholder="Email Klien..." required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-xs-3">Telepon</label>
-                            <div class="col-xs-8">
-                                <input name="telepon_klien" class="form-control" type="number" placeholder="Telepon Klien..." required>
+                                <input name="nama_pos" value="<?php echo $pos->nama_pos ?>" class="form-control" type="text" placeholder="Nama Pos..." required>
                             </div>
                         </div>
 
                         <div class="from-group text-right">
                             <input type="submit" class="btn btn-success" value="Simpan" />
+                            <a href="<?php echo site_url('master/pos') ?>" class="btn btn-warning">Batal</a>
                         </div>
                     </form>
                 </div>
