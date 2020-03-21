@@ -37,9 +37,7 @@ class Dashboard extends CI_Controller
 	function administration()
 	{
 		//load the view
-		$data['bulan'] = $this->anggaran->getBulan()->result();
-		$data['pos'] = $this->anggaran->getPos(1)->result();
-		$data['klien'] = $this->klien->getKlien()->result();
+		$data['anggaran'] = $this->anggaran->summaryAdministration()->result();
 		$this->load->view('headfoot/header');
 		$this->load->view('administration/list-data', $data);
 		$this->load->view('headfoot/footer');
@@ -47,8 +45,11 @@ class Dashboard extends CI_Controller
 
 	function tambah_admin()
 	{
+		$data['bulan'] = $this->anggaran->getBulan()->result();
+		$data['pos'] = $this->anggaran->getPos(1)->result();
+		$data['klien'] = $this->klien->getKlien()->result();
 		$this->load->view('headfoot/header');
-		$this->load->view('administration/input-data');
+		$this->load->view('administration/input-data', $data);
 		$this->load->view('headfoot/footer');
 	}
 
@@ -57,7 +58,7 @@ class Dashboard extends CI_Controller
 		$idKlien = $this->input->post('klien');
 		$tahun = $this->input->post('tahun-anggaran');
 		$bulan = $this->input->post('bulan-anggaran');
-
+		$idAnggaran = $this->input->post('id_anggaran');
 
 		//detail anggaran
 		$pos = $this->input->post('pos-anggaran');
@@ -68,23 +69,29 @@ class Dashboard extends CI_Controller
 		$pengeluaran = $this->input->post('pengeluaran');
 
 		$dataInsertAnggaran = [
+			'id_anggaran' => $idAnggaran,
 			'id_klien' => $idKlien,
 			'id_bulan' => $bulan,
 			'tahun' => $tahun,
 
 		];
 
-		$dataInsertDetail = [
-			'id_pos' => $pos,
-			'uraian' => $uraian,
-			'volume' => $volume,
-			'satuan' => $satuan,
-			'harga_satuan' => $hargaSatuan,
-			'pengeluaran' => $pengeluaran,
-		];
+		foreach ($uraian as $key => $value) {
+
+			$dataInsertDetail = [
+				'id_anggaran' => $idAnggaran,
+				'id_pos' => $pos,
+				'uraian' => $value,
+				'volume' => $volume[$key],
+				'satuan' => $satuan[$key],
+				'harga_satuan' => $hargaSatuan[$key],
+				'pengeluaran' => $pengeluaran[$key],
+			];
+
+			$this->anggaran->insertData('tbl_detail_anggaran', $dataInsertDetail);
+		}
 
 		$this->anggaran->insertData('tbl_anggaran', $dataInsertAnggaran);
-		$this->anggaran->insertData('tbl_detail_anggaran', $dataInsertDetail);
 
 		redirect('dashboard/administration');
 	}
@@ -94,6 +101,13 @@ class Dashboard extends CI_Controller
 		$data['anggaran'] = $this->anggaran->getById($idAnggaran);
 		$this->load->view('headfoot/header');
 		$this->load->view('administration/edit-data', $data);
+		$this->load->view('headfoot/footer');
+	}
+
+	function detail_data_admin()
+	{
+		$this->load->view('headfoot/header');
+		$this->load->view('administration/detail-data');
 		$this->load->view('headfoot/footer');
 	}
 
@@ -145,8 +159,16 @@ class Dashboard extends CI_Controller
 	function production()
 	{
 		//load the view
+		$data['anggaran'] = $this->anggaran->summaryProduction()->result();
+		$this->load->view('headfoot/header');
+		$this->load->view('production/list-data', $data);
+		$this->load->view('headfoot/footer');
+	}
+
+	function tambah_production()
+	{
 		$data['bulan'] = $this->anggaran->getBulan()->result();
-		$data['pos'] = $this->anggaran->getPos(2)->result();
+		$data['pos'] = $this->anggaran->getPos(1)->result();
 		$data['klien'] = $this->klien->getKlien()->result();
 		$this->load->view('headfoot/header');
 		$this->load->view('production/input-data', $data);
@@ -158,7 +180,7 @@ class Dashboard extends CI_Controller
 		$idKlien = $this->input->post('klien');
 		$tahun = $this->input->post('tahun-anggaran');
 		$bulan = $this->input->post('bulan-anggaran');
-
+		$idAnggaran = $this->input->post('id_anggaran');
 
 		//detail anggaran
 		$pos = $this->input->post('pos-anggaran');
@@ -169,13 +191,71 @@ class Dashboard extends CI_Controller
 		$pengeluaran = $this->input->post('pengeluaran');
 
 		$dataInsertAnggaran = [
+			'id_anggaran' => $idAnggaran,
 			'id_klien' => $idKlien,
 			'id_bulan' => $bulan,
 			'tahun' => $tahun,
 
 		];
 
-		$dataInsertDetail = [
+		foreach ($uraian as $key => $value) {
+
+			$dataInsertDetail = [
+				'id_anggaran' => $idAnggaran,
+				'id_pos' => $pos,
+				'uraian' => $value,
+				'volume' => $volume[$key],
+				'satuan' => $satuan[$key],
+				'harga_satuan' => $hargaSatuan[$key],
+				'pengeluaran' => $pengeluaran[$key],
+			];
+
+			$this->anggaran->insertData('tbl_detail_anggaran', $dataInsertDetail);
+		}
+
+		$this->anggaran->insertData('tbl_anggaran', $dataInsertAnggaran);
+
+		redirect('dashboard/production');
+	}
+
+	function edit_production($idAnggaran)
+	{
+		$data['anggaran'] = $this->anggaran->getById($idAnggaran);
+		$this->load->view('headfoot/header');
+		$this->load->view('production/edit-data', $data);
+		$this->load->view('headfoot/footer');
+	}
+
+	function detail_data_production()
+	{
+		$this->load->view('headfoot/header');
+		$this->load->view('production/detail-data');
+		$this->load->view('headfoot/footer');
+	}
+
+	function update_production($idKlien)
+	{
+		$idKlien = $this->input->post('klien');
+		$tahun = $this->input->post('tahun-anggaran');
+		$bulan = $this->input->post('bulan-anggaran');
+
+
+		//detail anggaran
+		$pos = $this->input->post('pos-anggaran');
+		$uraian = $this->input->post('uraian');
+		$volume = $this->input->post('volume');
+		$satuan = $this->input->post('satuan');
+		$hargaSatuan = $this->input->post('harga-satuan');
+		$pengeluaran = $this->input->post('pengeluaran');
+
+		$dataUpdateAnggaran = [
+			'id_klien' => $idKlien,
+			'id_bulan' => $bulan,
+			'tahun' => $tahun,
+
+		];
+
+		$dataUpdateDetail = [
 			'id_pos' => $pos,
 			'uraian' => $uraian,
 			'volume' => $volume,
@@ -184,15 +264,33 @@ class Dashboard extends CI_Controller
 			'pengeluaran' => $pengeluaran,
 		];
 
-		$this->anggaran->insertData('tbl_anggaran', $dataInsertAnggaran);
-		$this->anggaran->insertData('tbl_detail_anggaran', $dataInsertDetail);
+		$where = ['id_klien' => $idKlien];
+		$this->anggaran->updateData('tbl_anggaran', $dataUpdateAnggaran, $where);
+		$this->anggaran->updateData('tbl_detail_anggaran', $dataUpdateDetail, $where);
+
+		redirect('dashboard/production');
+	}
+
+	function delete_production($idKlien)
+	{
+		$where = ['id_klien' => $idKlien];
+		$this->klien->deleteData('tbl_anggaran', $where);
+		redirect('dashboard/production');
 	}
 
 	function hardware()
 	{
 		//load the view
+		$data['anggaran'] = $this->anggaran->summaryHardware()->result();
+		$this->load->view('headfoot/header');
+		$this->load->view('hardware/list-data', $data);
+		$this->load->view('headfoot/footer');
+	}
+
+	function tambah_hardware()
+	{
 		$data['bulan'] = $this->anggaran->getBulan()->result();
-		$data['pos'] = $this->anggaran->getPos(3)->result();
+		$data['pos'] = $this->anggaran->getPos(1)->result();
 		$data['klien'] = $this->klien->getKlien()->result();
 		$this->load->view('headfoot/header');
 		$this->load->view('hardware/input-data', $data);
@@ -204,7 +302,7 @@ class Dashboard extends CI_Controller
 		$idKlien = $this->input->post('klien');
 		$tahun = $this->input->post('tahun-anggaran');
 		$bulan = $this->input->post('bulan-anggaran');
-
+		$idAnggaran = $this->input->post('id_anggaran');
 
 		//detail anggaran
 		$pos = $this->input->post('pos-anggaran');
@@ -215,37 +313,49 @@ class Dashboard extends CI_Controller
 		$pengeluaran = $this->input->post('pengeluaran');
 
 		$dataInsertAnggaran = [
+			'id_anggaran' => $idAnggaran,
 			'id_klien' => $idKlien,
 			'id_bulan' => $bulan,
 			'tahun' => $tahun,
 
 		];
 
-		$dataInsertDetail = [
-			'id_pos' => $pos,
-			'uraian' => $uraian,
-			'volume' => $volume,
-			'satuan' => $satuan,
-			'harga_satuan' => $hargaSatuan,
-			'pengeluaran' => $pengeluaran,
-		];
+		foreach ($uraian as $key => $value) {
+
+			$dataInsertDetail = [
+				'id_anggaran' => $idAnggaran,
+				'id_pos' => $pos,
+				'uraian' => $value,
+				'volume' => $volume[$key],
+				'satuan' => $satuan[$key],
+				'harga_satuan' => $hargaSatuan[$key],
+				'pengeluaran' => $pengeluaran[$key],
+			];
+
+			$this->anggaran->insertData('tbl_detail_anggaran', $dataInsertDetail);
+		}
 
 		$this->anggaran->insertData('tbl_anggaran', $dataInsertAnggaran);
-		$this->anggaran->insertData('tbl_detail_anggaran', $dataInsertDetail);
+
+		redirect('dashboard/hardware');
 	}
 
-	function maintenance()
+	function edit_hardware($idAnggaran)
 	{
-		//load the view
-		$data['bulan'] = $this->anggaran->getBulan()->result();
-		$data['pos'] = $this->anggaran->getPos(4)->result();
-		$data['klien'] = $this->klien->getKlien()->result();
+		$data['anggaran'] = $this->anggaran->getById($idAnggaran);
 		$this->load->view('headfoot/header');
-		$this->load->view('maintenance/input-data', $data);
+		$this->load->view('hardware/edit-data', $data);
 		$this->load->view('headfoot/footer');
 	}
 
-	function input_maintenance_proses()
+	function detail_data_hardware()
+	{
+		$this->load->view('headfoot/header');
+		$this->load->view('hardware/detail-data');
+		$this->load->view('headfoot/footer');
+	}
+
+	function update_hardware($idKlien)
 	{
 		$idKlien = $this->input->post('klien');
 		$tahun = $this->input->post('tahun-anggaran');
@@ -260,14 +370,14 @@ class Dashboard extends CI_Controller
 		$hargaSatuan = $this->input->post('harga-satuan');
 		$pengeluaran = $this->input->post('pengeluaran');
 
-		$dataInsertAnggaran = [
+		$dataUpdateAnggaran = [
 			'id_klien' => $idKlien,
 			'id_bulan' => $bulan,
 			'tahun' => $tahun,
 
 		];
 
-		$dataInsertDetail = [
+		$dataUpdateDetail = [
 			'id_pos' => $pos,
 			'uraian' => $uraian,
 			'volume' => $volume,
@@ -276,7 +386,139 @@ class Dashboard extends CI_Controller
 			'pengeluaran' => $pengeluaran,
 		];
 
+		$where = ['id_klien' => $idKlien];
+		$this->anggaran->updateData('tbl_anggaran', $dataUpdateAnggaran, $where);
+		$this->anggaran->updateData('tbl_detail_anggaran', $dataUpdateDetail, $where);
+
+		redirect('dashboard/hardware');
+	}
+
+	function delete_hardware($idKlien)
+	{
+		$where = ['id_klien' => $idKlien];
+		$this->klien->deleteData('tbl_anggaran', $where);
+		redirect('dashboard/hardware');
+	}
+
+	function maintenance()
+	{
+		//load the view
+		$data['anggaran'] = $this->anggaran->summaryAdministration()->result();
+		$this->load->view('headfoot/header');
+		$this->load->view('maintenance/list-data', $data);
+		$this->load->view('headfoot/footer');
+	}
+
+	function tambah_maintenance()
+	{
+		$data['bulan'] = $this->anggaran->getBulan()->result();
+		$data['pos'] = $this->anggaran->getPos(1)->result();
+		$data['klien'] = $this->klien->getKlien()->result();
+		$this->load->view('headfoot/header');
+		$this->load->view('maintenance/input-data', $data);
+		$this->load->view('headfoot/footer');
+	}
+
+	function input_maintenance_proses()
+	{
+		$idKlien = $this->input->post('klien');
+		$tahun = $this->input->post('tahun-anggaran');
+		$bulan = $this->input->post('bulan-anggaran');
+		$idAnggaran = $this->input->post('id_anggaran');
+
+		//detail anggaran
+		$pos = $this->input->post('pos-anggaran');
+		$uraian = $this->input->post('uraian');
+		$volume = $this->input->post('volume');
+		$satuan = $this->input->post('satuan');
+		$hargaSatuan = $this->input->post('harga-satuan');
+		$pengeluaran = $this->input->post('pengeluaran');
+
+		$dataInsertAnggaran = [
+			'id_anggaran' => $idAnggaran,
+			'id_klien' => $idKlien,
+			'id_bulan' => $bulan,
+			'tahun' => $tahun,
+
+		];
+
+		foreach ($uraian as $key => $value) {
+
+			$dataInsertDetail = [
+				'id_anggaran' => $idAnggaran,
+				'id_pos' => $pos,
+				'uraian' => $value,
+				'volume' => $volume[$key],
+				'satuan' => $satuan[$key],
+				'harga_satuan' => $hargaSatuan[$key],
+				'pengeluaran' => $pengeluaran[$key],
+			];
+
+			$this->anggaran->insertData('tbl_detail_anggaran', $dataInsertDetail);
+		}
+
 		$this->anggaran->insertData('tbl_anggaran', $dataInsertAnggaran);
-		$this->anggaran->insertData('tbl_detail_anggaran', $dataInsertDetail);
+
+		redirect('dashboard/maintenance');
+	}
+
+	function edit_maintenance($idAnggaran)
+	{
+		$data['anggaran'] = $this->anggaran->getById($idAnggaran);
+		$this->load->view('headfoot/header');
+		$this->load->view('maintenance/edit-data', $data);
+		$this->load->view('headfoot/footer');
+	}
+
+	function detail_data_maintenance()
+	{
+		$this->load->view('headfoot/header');
+		$this->load->view('maintenance/detail-data');
+		$this->load->view('headfoot/footer');
+	}
+
+	function update_maintenance($idKlien)
+	{
+		$idKlien = $this->input->post('klien');
+		$tahun = $this->input->post('tahun-anggaran');
+		$bulan = $this->input->post('bulan-anggaran');
+
+
+		//detail anggaran
+		$pos = $this->input->post('pos-anggaran');
+		$uraian = $this->input->post('uraian');
+		$volume = $this->input->post('volume');
+		$satuan = $this->input->post('satuan');
+		$hargaSatuan = $this->input->post('harga-satuan');
+		$pengeluaran = $this->input->post('pengeluaran');
+
+		$dataUpdateAnggaran = [
+			'id_klien' => $idKlien,
+			'id_bulan' => $bulan,
+			'tahun' => $tahun,
+
+		];
+
+		$dataUpdateDetail = [
+			'id_pos' => $pos,
+			'uraian' => $uraian,
+			'volume' => $volume,
+			'satuan' => $satuan,
+			'harga_satuan' => $hargaSatuan,
+			'pengeluaran' => $pengeluaran,
+		];
+
+		$where = ['id_klien' => $idKlien];
+		$this->anggaran->updateData('tbl_anggaran', $dataUpdateAnggaran, $where);
+		$this->anggaran->updateData('tbl_detail_anggaran', $dataUpdateDetail, $where);
+
+		redirect('dashboard/maintenance');
+	}
+
+	function delete_maintenance($idKlien)
+	{
+		$where = ['id_klien' => $idKlien];
+		$this->klien->deleteData('tbl_anggaran', $where);
+		redirect('dashboard/maintenance');
 	}
 }

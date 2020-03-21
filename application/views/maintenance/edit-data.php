@@ -1,7 +1,3 @@
-<?php $row = $this->db->query("SELECT id_anggaran FROM tbl_anggaran ORDER BY id_anggaran DESC LIMIT 1")->row();
-$nextIdAnggaran = $row->id_anggaran + 1;
-// echo $nextIdAnggaran;
-?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -20,7 +16,7 @@ $nextIdAnggaran = $row->id_anggaran + 1;
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Input Data</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Edit Data</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -41,7 +37,6 @@ $nextIdAnggaran = $row->id_anggaran + 1;
                             <label>Biaya Administrasi</label>
                         </div>
 
-                        <input type="hidden" value="<?php echo $nextIdAnggaran ?>" name="id_anggaran" />
                         <div class="form-group">
                             <label>Klien</label>
                             <select class="form-control" name="klien">
@@ -57,7 +52,7 @@ $nextIdAnggaran = $row->id_anggaran + 1;
                             <label>Tahun</label>
                             <select class="form-control" name="tahun-anggaran">
                                 <?php $tahun = ['2019', '2020'];
-                                for ($t = 2019; $t <= date('Y'); $t++) {
+                                foreach ($tahun as $t) {
                                 ?>
                                     <option value="<?php echo $t ?>"><?php echo $t ?></option>
                                 <?php } ?>
@@ -91,7 +86,7 @@ $nextIdAnggaran = $row->id_anggaran + 1;
                                 Detail Anggaran
                             </label>
                             <div class="table-responsive">
-                                <table class="table table-borderless" id="detail-anggaran">
+                                <table class="table table-borderless">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -106,13 +101,13 @@ $nextIdAnggaran = $row->id_anggaran + 1;
                                         <tr>
                                             <td>1</td>
                                             <td>
-                                                <input type="text" name="uraian[]" class="form-control" />
+                                                <input type="text" name="uraian" class="form-control" />
                                             </td>
                                             <td>
-                                                <input type="number" name="volume[]" class="form-control" />
+                                                <input type="number" name="volume" class="form-control" />
                                             </td>
                                             <td>
-                                                <select class="form-control" name="satuan[]">
+                                                <select class="form-control" name="satuan">
                                                     <option value="paket">Paket</option>
                                                     <option value="personel">Personel</option>
                                                     <option value="buku">Buku</option>
@@ -120,15 +115,21 @@ $nextIdAnggaran = $row->id_anggaran + 1;
                                                     <option value="tahun">Tahun</option>
                                             </td>
                                             <td>
-                                                <input type="number" name="harga-satuan[]" class="form-control" />
+                                                <input type="number" name="harga-satuan" class="form-control" />
                                             </td>
                                             <td>
-                                                <input type="number" name="pengeluaran[]" class="form-control" />
+                                                <input type="number" name="pengeluaran" class="form-control" />
                                             </td>
                                         </tr>
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="6" class="text-right">
+                                                <a class="btn btn-primary" href="#">Tambah Inputan</a>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
-                                <a class="btn btn-primary" href="javascript:void(0)" onclick="return addRows()">Tambah Inputan</a>
                             </div>
                         </div>
                         <div class="from-group text-right">
@@ -147,36 +148,4 @@ $nextIdAnggaran = $row->id_anggaran + 1;
 <!-- /.container-fluid -->
 
 </div>
-
-<script>
-    var urut = 1;
-
-    function addRows() {
-        var prm = prompt("Mau tambah berapa baris ?", 1);
-        for (var i = 1; i <= prm; i++) {
-            var table = document.getElementById('detail-anggaran');
-            var lengthRow = document.getElementById('detail-anggaran').rows.length;
-            var row = table.insertRow(lengthRow);
-            var nomorUrut = row.insertCell(0);
-            nomorUrut.innerHTML = ++urut;
-            var uraian = row.insertCell(1);
-            uraian.innerHTML = '<input type="text" name="uraian[]" class="form-control" required/>';
-            var volume = row.insertCell(2);
-            volume.innerHTML = '<input type="number" name="volume[]" class="form-control" required/>';
-            var satuan = row.insertCell(3);
-            satuan.innerHTML = '<select class="form-control" name="satuan[]" required>' +
-                '<option value="paket">Paket</option>' +
-                '<option value="personel">Personel</option>' +
-                '<option value="buku">Buku</option>' +
-                '<option value="bulan">Bulan</option>' +
-                '<option value="tahun">Tahun</option>' +
-                '</select>';
-
-            var hrgSatuan = row.insertCell(4);
-            hrgSatuan.innerHTML = '<input type="number" name="harga-satuan[]" required class="form-control" />';
-            var pengeluaran = row.insertCell(5);
-            pengeluaran.innerHTML = '<input type="number" name="pengeluaran[]" required class="form-control" />';
-        }
-    }
-</script>
 <!-- End of Main Content -->

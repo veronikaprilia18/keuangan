@@ -80,7 +80,6 @@
                                             <td><?php echo $value->nama_user ?></td>
                                             <td><?php echo $value->telepon_user ?></td>
                                             <td><?php echo $value->gaji_user ?></td>
-                                            <td></td>
                                             <td>
                                                 <a href="<?php echo site_url('master/edit_user/' . $value->id_user) ?>" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                                                 <a href="<?php echo site_url('master/delete_user/' . $value->id_user) ?>" onclick="return confirm('Hapus data ini?')" class="btn btn-danger"><i class="fa fa-trash"></i></a>
