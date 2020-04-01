@@ -16,9 +16,40 @@ class Anggaran extends CI_Model
         return $this->db->get_where("tbl_anggaran", ["id_anggaran" => $id])->row();
     }
 
+    public function getAdministrationById($id)
+    {
+        return $this->db->query("SELECT * FROM tbl_anggaran INNER JOIN tbl_detail_anggaran ON tbl_anggaran.id_anggaran=tbl_detail_anggaran.id_anggaran 
+        INNER JOIN tbl_klien ON tbl_anggaran.id_klien=tbl_klien.id_klien 
+        WHERE tbl_anggaran.id_anggaran='$id'")->row();
+    }
+
+    function getDetailByBulan($idAnggaran, $tahun, $idPos, $idBulan)
+    {
+        return $this->db->query("SELECT * FROM `tbl_detail_anggaran` "
+            . "INNER JOIN tbl_anggaran "
+            . "ON tbl_detail_anggaran.id_anggaran=tbl_anggaran.id_anggaran "
+            . "INNER JOIN tbl_pos "
+            . "ON tbl_detail_anggaran.id_pos=tbl_pos.id_pos "
+            . "WHERE tbl_detail_anggaran.id_anggaran='$idAnggaran' "
+            . "AND tbl_anggaran.tahun='$tahun' "
+            . "AND tbl_detail_anggaran.id_pos='$idPos' "
+            . "AND tbl_anggaran.id_bulan='$idBulan'")->result();
+    }
+
+
+    public function getAnggaranByBulan($idAnggaran, $tahun, $idPos, $idBulan)
+    {
+        return $this->db->query("SELECT * FROM tbl_detail_anggaran INNER JOIN tbl_anggaran ON tbl_detail_anggaran.id_anggaran=tbl_anggaran.id_anggaran INNER JOIN tbl_pos ON tbl_detail_anggaran.id_pos=tbl_pos.id_pos WHERE tbl_detail_anggaran.id_anggaran='$idAnggaran' AND tbl_anggaran.tahun='$tahun' AND tbl_detail_anggaran.id_pos='$idPos' AND tbl_anggaran.id_bulan='$idBulan'");
+    }
+
     function getBulan()
     {
         return $this->db->query("SELECT * FROM tbl_bulan ");
+    }
+
+    function getBulanById($id_bulan)
+    {
+        return $this->db->query("SELECT * FROM tbl_bulan WHERE id_bulan='$id_bulan'");
     }
 
     function getPos($idKategori)
@@ -59,7 +90,14 @@ class Anggaran extends CI_Model
 
     function summaryAdministration()
     {
-        return $this->db->query("SELECT * FROM tbl_anggaran INNER JOIN tbl_klien ON tbl_anggaran.id_klien=tbl_klien.id_klien GROUP BY tahun
+        return $this->db->query("SELECT * FROM tbl_anggaran
+        LEFT JOIN tbl_klien ON tbl_anggaran.id_klien=tbl_klien.id_klien
+        LEFT JOIN tbl_bulan ON tbl_anggaran.id_bulan=tbl_bulan.id_bulan
+        LEFT JOIN tbl_detail_anggaran ON tbl_anggaran.id_anggaran=tbl_detail_anggaran.id_anggaran
+        LEFT JOIN tbl_pos ON tbl_detail_anggaran.id_pos=tbl_pos.id_pos
+        LEFT JOIN tbl_kategori ON tbl_pos.id_kategori=tbl_kategori.id_kategori
+        WHERE tbl_kategori.id_kategori='1'
+        GROUP BY tahun
         ");
     }
 

@@ -8,10 +8,10 @@ class Dashboard extends CI_Controller
 	{
 		parent::__construct();
 		//load model admin
-		$this->load->model('admin');
-		$this->load->model('anggaran');
-		$this->load->model('klien');
-		$this->load->library('form_validation');
+		// $this->load->model('admin');
+		// $this->load->model('anggaran');
+		// $this->load->model('klien');
+		// $this->load->library('form_validation');
 	}
 
 	public function index()
@@ -38,6 +38,8 @@ class Dashboard extends CI_Controller
 	{
 		//load the view
 		$data['anggaran'] = $this->anggaran->summaryAdministration()->result();
+		$data['bulan'] = $this->anggaran->getBulan()->result();
+		$data['pos'] = $this->anggaran->getPos(1)->result();
 		$this->load->view('headfoot/header');
 		$this->load->view('administration/list-data', $data);
 		$this->load->view('headfoot/footer');
@@ -96,17 +98,52 @@ class Dashboard extends CI_Controller
 		redirect('dashboard/administration');
 	}
 
-	function edit_admin($idAnggaran)
+	function edit_admin()
 	{
-		$data['anggaran'] = $this->anggaran->getById($idAnggaran);
+		$idAnggaran = $this->input->get('id-anggaran');
+		$data['bulan'] = $this->anggaran->getBulan()->result();
+		$data['pos'] = $this->anggaran->getPos(1)->result();
+		$data['klien'] = $this->klien->getKlien()->result();
+		$data['anggaran'] = $this->anggaran->getAdministrationById($idAnggaran);
+		// echo "SELECT * FROM tbl_anggaran INNER JOIN tbl_detail_anggaran ON tbl_anggaran.id_anggaran=tbl_detail_anggaran.id_anggaran 
+		// INNER JOIN tbl_klien ON tbl_anggaran.id_klien=tbl_klien.id_klien 
+		// WHERE tbl_anggaran.id_anggaran='$idAnggaran'";
 		$this->load->view('headfoot/header');
 		$this->load->view('administration/edit-data', $data);
 		$this->load->view('headfoot/footer');
 	}
 
+	function update_admin()
+	{
+		//detail anggaran
+		$idDetail = $this->input->post('id_detail');
+		$uraian = $this->input->post('uraian');
+		$volume = $this->input->post('volume');
+		$satuan = $this->input->post('satuan');
+		$hargaSatuan = $this->input->post('harga-satuan');
+		$pengeluaran = $this->input->post('pengeluaran');
+
+		foreach ($uraian as $key => $value) {
+
+			$dataInsertDetail = [
+				'uraian' => $value,
+				'volume' => $volume[$key],
+				'satuan' => $satuan[$key],
+				'harga_satuan' => $hargaSatuan[$key],
+				'pengeluaran' => $pengeluaran[$key],
+			];
+
+			$where = ['id_detail_anggaran' => $idDetail[$key]];
+
+			$this->anggaran->updateData('tbl_detail_anggaran', $dataInsertDetail, $where);
+		}
+		redirect('dashboard/administration');
+	}
+
 	function detail_data_admin()
 	{
 		$this->load->view('headfoot/header');
+		$data['bulan'] = $this->anggaran->getBulan()->result();
 		$this->load->view('administration/detail-data');
 		$this->load->view('headfoot/footer');
 	}

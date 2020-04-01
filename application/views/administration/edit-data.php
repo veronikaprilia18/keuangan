@@ -32,61 +32,34 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <form action="<?php echo site_url('dashboard/input_admin_proses') ?>" method="POST">
+                    <form action="<?php echo site_url('dashboard/update_admin') ?>" method="POST">
                         <div class="form-group">
-                            <label>Biaya Administrasi</label>
+                            <h5><?php echo $this->pos->getById($_GET['select-pos'])->nama_pos ?></h5>
                         </div>
 
                         <div class="form-group">
                             <label>Klien</label>
-                            <select class="form-control" name="klien">
-                                <?php
-                                foreach ($klien as $k) {
-                                ?>
-                                    <option value="<?php echo $k->id_klien ?>"><?php echo $k->nama_perusahaan ?></option>
-                                <?php } ?>
-                            </select>
+                            <h5><?php echo $anggaran->nama_perusahaan ?></h5>
                         </div>
 
                         <div class="form-group">
                             <label>Tahun</label>
-                            <select class="form-control" name="tahun-anggaran">
-                                <?php $tahun = ['2019', '2020'];
-                                foreach ($tahun as $t) {
-                                ?>
-                                    <option value="<?php echo $t ?>"><?php echo $t ?></option>
-                                <?php } ?>
-                            </select>
+                            <h5><?php echo $_GET['tahun'] ?></h5>
                         </div>
 
                         <div class="form-group">
                             <label>
                                 Bulan
                             </label>
-                            <select class="form-control" name="bulan-anggaran">
-                                <?php foreach ($bulan as $b) { ?>
-                                    <option value="<?php echo $b->id_bulan ?>"><?php echo $b->nama_bulan ?></option>
-                                <?php } ?>
-                            </select>
+                            <h5><?php echo $this->anggaran->getBulanById($_GET['select-bulan'])->row()->nama_bulan ?></h5>
                         </div>
 
                         <div class="form-group">
-                            <label>
-                                Pos
-                            </label>
-                            <select class="form-control" name="pos-anggaran">
-                                <?php foreach ($pos as $p) { ?>
-                                    <option value="<?php echo $p->id_pos ?>"><?php echo $p->nama_pos ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>
+                            <h7>
                                 Detail Anggaran
-                            </label>
+                            </h7>
                             <div class="table-responsive">
-                                <table class="table table-borderless">
+                                <table class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -98,37 +71,47 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>
-                                                <input type="text" name="uraian" class="form-control" />
-                                            </td>
-                                            <td>
-                                                <input type="number" name="volume" class="form-control" />
-                                            </td>
-                                            <td>
-                                                <select class="form-control" name="satuan">
-                                                    <option value="paket">Paket</option>
-                                                    <option value="personel">Personel</option>
-                                                    <option value="buku">Buku</option>
-                                                    <option value="bulan">Bulan</option>
-                                                    <option value="tahun">Tahun</option>
-                                            </td>
-                                            <td>
-                                                <input type="number" name="harga-satuan" class="form-control" />
-                                            </td>
-                                            <td>
-                                                <input type="number" name="pengeluaran" class="form-control" />
-                                            </td>
-                                        </tr>
+                                        <?php $detail = $this->anggaran->getDetailByBulan(
+                                            $_GET['id-anggaran'],
+                                            $_GET['tahun'],
+                                            $_GET['select-pos'],
+                                            $_GET['select-bulan']
+                                        );
+                                        foreach ($detail as $key => $d) {
+                                        ?>
+                                            <tr>
+                                                <td><?php echo $key + 1 ?></td>
+                                                <td>
+                                                    <input type="hidden" name="id_detail[]" value="<?php echo $d->id_detail_anggaran ?>">
+                                                    <input type="text" name="uraian[]" class="form-control" value="<?php echo $d->uraian ?>" />
+                                                </td>
+                                                <td>
+                                                    <input type="number" name="volume[]" class="form-control" value="<?php echo $d->volume ?>" />
+                                                </td>
+                                                <td>
+                                                    <select class="form-control" name="satuan[]">
+                                                        <option value="paket" <?php echo $d->satuan == "paket" ? "selected" : "" ?>>Paket</option>
+                                                        <option value="personel" <?php echo $d->satuan == "personel" ? "selected" : "" ?>>Personel</option>
+                                                        <option value="buku" <?php echo $d->satuan == "buku" ? "selected" : "" ?>>Buku</option>
+                                                        <option value="bulan" <?php echo $d->satuan == "bulan" ? "selected" : "" ?>>Bulan</option>
+                                                        <option value="tahun" <?php echo $d->satuan == "tahun" ? "selected" : "" ?>>Tahun</option>
+                                                </td>
+                                                <td>
+                                                    <input type="number" name="harga-satuan[]" class="form-control" value="<?php echo $d->harga_satuan ?>" />
+                                                </td>
+                                                <td>
+                                                    <input type="number" name="pengeluaran[]" readonly class="form-control" value="<?php echo $d->harga_satuan * $d->volume ?>" />
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
                                     </tbody>
-                                    <tfoot>
+                                    <!-- <tfoot>
                                         <tr>
                                             <td colspan="6" class="text-right">
                                                 <a class="btn btn-primary" href="#">Tambah Inputan</a>
                                             </td>
                                         </tr>
-                                    </tfoot>
+                                    </tfoot> -->
                                 </table>
                             </div>
                         </div>
